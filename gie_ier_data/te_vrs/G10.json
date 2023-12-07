@@ -8,13 +8,13 @@
                {"name":"GR3","P_W":0.0,"Q_var":0.0,"U_kV":20.0},
                {"name":"GR4","P_W":0.0,"Q_var":0.0,"U_kV":20.0},
                {"name":"STA","P_W":0.0,"Q_var":0.0,"U_kV":0.69}],
-      "lines":[{"bus_j":"GRI","bus_k":"POI","X_km":0.4,"R_km":0.12,"km":13.8},
+      "lines":[{"bus_j":"GRI","bus_k":"POI","X_km":0.4,"R_km":0.12,"km":13.8, "monitor":true},
                {"bus_j":"POI","bus_k":"PMV","X_pu":0.04,"R_pu":0.01, "S_mva":50.0},
-               {"bus_j":"PMV","bus_k":"GR1","X_km":0.12,"R_km":0.27,"km":0.5},
+               {"bus_j":"PMV","bus_k":"GR1","X_km":0.12,"R_km":0.27,"km":0.5, "monitor":true},
                {"bus_j":"GR1","bus_k":"GR2","X_km":0.12,"R_km":0.27,"km":0.5},
                {"bus_j":"PMV","bus_k":"GR3","X_km":0.12,"R_km":0.27,"km":0.5},
                {"bus_j":"GR3","bus_k":"GR4","X_km":0.12,"R_km":0.27,"km":0.5},
-               {"bus_j":"PMV","bus_k":"STA","X_pu":0.04,"R_pu":0.01, "S_mva":10.0}
+               {"bus_j":"PMV","bus_k":"STA","X_pu":0.04,"R_pu":0.01, "S_mva":10.0, "monitor":true}
               ],
       "syns":[{"bus":"GRI","S_n":100e9,
           "X_d":1.8,"X1d":0.3, "T1d0":8.0,    
