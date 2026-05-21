@@ -1,0 +1,87 @@
+{
+system: {name: "sys8bus4gen", S_base: 100e6}
+agc: {gen: "G1", K_p_agc: 0.0, K_i_agc: 0.01}
+buses: [
+  {name: "1", P_W: -350000000.0, Q_var: -44000000.0, U_kV: 400.0},
+  {name: "2", P_W: -233000000.0, Q_var: -29000000.0, U_kV: 400.0},
+  {name: "3", P_W: -467000000.0, Q_var: -58000000.0, U_kV: 400.0},
+  {name: "4", P_W: -700000000.0, Q_var: -87000000.0, U_kV: 400.0},
+  {name: "5", P_W: 0.0, Q_var: 0.0, U_kV: 20.0},
+  {name: "6", P_W: 0.0, Q_var: 0.0, U_kV: 20.0},
+  {name: "7", P_W: 0.0, Q_var: 0.0, U_kV: 20.0},
+  {name: "8", P_W: 0.0, Q_var: 0.0, U_kV: 20.0}
+],
+lines: [
+  {bus_j: "1", bus_k: "2", X_km: 0.529, R_km: 0.0529, Bs_km: 2.1e-6, km: 500},
+  {bus_j: "3", bus_k: "4", X_km: 0.529, R_km: 0.0529, Bs_km: 2.1e-6, km: 10},
+  {bus_j: "1", bus_k: "3", X_km: 0.529, R_km: 0.0529, Bs_km: 2.1e-6, km: 10},
+  {bus_j: "2", bus_k: "4", X_km: 0.529, R_km: 0.0529, Bs_km: 2.1e-6, km: 500},
+  {bus_j: "1", bus_k: "4", X_km: 0.529, R_km: 0.0529, Bs_km: 2.1e-6, km: 10},
+  {bus_j: "3", bus_k: "2", X_km: 0.529, R_km: 0.0529, Bs_km: 2.1e-6, km: 500},
+  {bus_j: "5", bus_k: "1", X_pu: 0.1, R_pu: 0.0, S_mva: 900.0},
+  {bus_j: "6", bus_k: "2", X_pu: 0.1, R_pu: 0.0, S_mva: 900.0},
+  {bus_j: "7", bus_k: "3", X_pu: 0.1, R_pu: 0.0, S_mva: 900.0},
+  {bus_j: "8", bus_k: "4", X_pu: 0.1, R_pu: 0.0, S_mva: 900.0}
+],
+syns: [
+  // G1 — reference machine (K_delta > 0), controlled by AGC (no LC)
+  {bus: "5", name: "G1", type: "milano4ord",
+   S_n: 450000000.0, F_n: 50, H: 6.5, D: 0.0,
+   X_d: 1.8, X1d: 0.3, T1d0: 8.0,
+   X_q: 1.7, X1q: 0.55, T1q0: 0.4,
+   R_a: 0.0025, X_l: 0.2,
+   K_sec: 0.001, K_delta: 0.01,
+   avr: {type: "avr_1", K_a: 100.0, T_a: 1.0, T_b: 1.0, T_e: 0.1,
+         E_min: -10.0, E_max: 10.0, v_ref: 1.0},
+   gov: {type: "tgov1", R: 0.05, T_1: 1.0, T_2: 1.0, T_3: 10.0, D_t: 0.0,
+         V_max: 100.0, V_min: -100.0, p_c: 0.8},
+   pss: {type: "pss_kundur_2", K_stab: 0.0, T_w: 10.0,
+         T_1: 1.0, T_2: 1.0, T_3: 1.0, T_4: 1.0, V_Smax: 0.2, V_Smin: -0.2}
+  },
+  // G2 — load controller
+  {bus: "6", name: "G2", type: "milano4ord",
+   S_n: 300000000.0, F_n: 50, H: 6.5, D: 0.0,
+   X_d: 1.8, X1d: 0.3, T1d0: 8.0,
+   X_q: 1.7, X1q: 0.55, T1q0: 0.4,
+   R_a: 0.0025, X_l: 0.2,
+   K_sec: 0.001, K_delta: 0.0,
+   avr: {type: "avr_1", K_a: 100.0, T_a: 1.0, T_b: 1.0, T_e: 0.1,
+         E_min: -10.0, E_max: 10.0, v_ref: 1.0},
+   gov: {type: "tgov1", R: 0.05, T_1: 1.0, T_2: 1.0, T_3: 10.0, D_t: 0.0,
+         V_max: 1.0, V_min: 0.0},
+   pss: {type: "pss_kundur_2", K_stab: 0.0, T_w: 10.0,
+         T_1: 1.0, T_2: 1.0, T_3: 1.0, T_4: 1.0, V_Smax: 0.2, V_Smin: -0.2},
+   lc: {K_i: 0.001, p_c_lc: 0.9}
+  },
+  // G3 — load controller
+  {bus: "7", name: "G3", type: "milano4ord",
+   S_n: 600000000.0, F_n: 50, H: 6.5, D: 0.0,
+   X_d: 1.8, X1d: 0.3, T1d0: 8.0,
+   X_q: 1.7, X1q: 0.55, T1q0: 0.4,
+   R_a: 0.0025, X_l: 0.2,
+   K_sec: 0.001, K_delta: 0.0,
+   avr: {type: "avr_1", K_a: 100.0, T_a: 1.0, T_b: 1.0, T_e: 0.1,
+         E_min: -10.0, E_max: 10.0, v_ref: 1.0},
+   gov: {type: "tgov1", R: 0.05, T_1: 1.0, T_2: 1.0, T_3: 10.0, D_t: 0.0,
+         V_max: 1.0, V_min: 0.0},
+   pss: {type: "pss_kundur_2", K_stab: 0.0, T_w: 10.0,
+         T_1: 1.0, T_2: 1.0, T_3: 1.0, T_4: 1.0, V_Smax: 0.2, V_Smin: -0.2},
+   lc: {K_i: 0.001, p_c_lc: 0.8}
+  },
+  // G4 — load controller
+  {bus: "8", name: "G4", type: "milano4ord",
+   S_n: 900000000.0, F_n: 50, H: 6.5, D: 0.0,
+   X_d: 1.8, X1d: 0.3, T1d0: 8.0,
+   X_q: 1.7, X1q: 0.55, T1q0: 0.4,
+   R_a: 0.0025, X_l: 0.2,
+   K_sec: 0.001, K_delta: 0.0,
+   avr: {type: "avr_1", K_a: 100.0, T_a: 1.0, T_b: 1.0, T_e: 0.1,
+         E_min: -10.0, E_max: 10.0, v_ref: 1.0},
+   gov: {type: "tgov1", R: 0.05, T_1: 1.0, T_2: 1.0, T_3: 10.0, D_t: 0.0,
+         V_max: 1.0, V_min: 0.0},
+   pss: {type: "pss_kundur_2", K_stab: 0.0, T_w: 10.0,
+         T_1: 1.0, T_2: 1.0, T_3: 1.0, T_4: 1.0, V_Smax: 0.2, V_Smin: -0.2},
+   lc: {K_i: 0.001, p_c_lc: 0.8}
+  }
+]
+}
